@@ -20,8 +20,4 @@ public class HelloController {
         return "Test";
     }
 
-    @RequestMapping("/zones")
-    public List<Zone> zones() {
-        return ZoneService.getAllZones();
-    }
 }

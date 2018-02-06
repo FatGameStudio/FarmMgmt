@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Zone List</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+	<h1>Zone List</h1>
+	<br />
+	<br />
+	<div>
+		<table border="1">
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+			</tr>
+			<tr th:each="zone : ${zones}">
+				<td th:utext="${zone.id}">...</td>
+				<td th:utext="${zone.name}">...</td>
+				<td>
+					<form th:action="@{/zonesList}" method="POST">
+						<button type="submit" name="deleteZone" th:value="${zone.id}"
+							th:text="delete">Remove row</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<h1>Create a Zone:</h1>
+
+
+	<form th:action="@{/zonesList}" th:object="${zone}" method="POST">
+		Name: <input type="text" th:field="*{name}" /> <br /> <input
+			type="submit" value="Create" />
+	</form>
+
+	<br />
+
+	<!-- Check if errorMessage is not null and not empty -->
+
+	<div th:if="${errorMessage}" th:utext="${errorMessage}"
+		style="color: red; font-style: italic;">...</div>
+</body>
+</html>

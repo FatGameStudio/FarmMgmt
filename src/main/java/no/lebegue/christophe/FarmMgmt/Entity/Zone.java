@@ -1,13 +1,10 @@
 package no.lebegue.christophe.FarmMgmt.Entity;
 
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 
 
@@ -20,8 +17,6 @@ public class Zone {
     private Integer id;
     private String name;
     
-//    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
-//    private Set<Task> tasks;
 
     public String toString(){
     	return id + ":" + name;
@@ -43,13 +38,6 @@ public class Zone {
 		this.name = name;
 	}
 
-//	public Set<Task> getTasks() {
-//		return tasks;
-//	}
-//
-//	public void setTasks(Set<Task> tasks) {
-//		this.tasks = tasks;
-//	}
 
 
 }

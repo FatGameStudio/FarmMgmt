@@ -32,8 +32,20 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-devtools")
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("mysql:mysql-connector-java")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    
+    compile("mysql:mysql-connector-java")
+        
     compile("org.webjars:bootstrap:3.3.7")
+    compile("org.webjars:fullcalendar:3.8.0")
+    compile("org.webjars:momentjs:2.20.1")
+    compile("org.webjars:jquery:3.3.1")
+    compile("org.webjars:jquery-ui:1.12.1")
+    
+    
+    compile("com.google.api-client:google-api-client:1.23.0")
+    compile("com.google.oauth-client:google-oauth-client-jetty:1.23.0")
+    compile("com.google.apis:google-api-services-calendar:v3-rev287-1.23.0")
+        
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -22,6 +22,9 @@
 	th:src="@{/webjars/fullcalendar/3.8.0/fullcalendar.min.js}"
 	type="text/javascript"></script>
 
+<script src="/webjars/fullcalendar/3.8.0/locale/fr.js"
+	th:src="@{/webjars/fullcalendar/3.8.0/locale/fr.js}"
+	type="text/javascript"></script>
 
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
@@ -86,6 +89,7 @@
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
 					success : function(data) {
+
 						$('#calendar').fullCalendar('refetchEvents');
 					},
 					failure : function(errMsg) {
@@ -143,6 +147,7 @@
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
 					success : function(data) {
+
 						$('#calendar').fullCalendar('refetchEvents');
 					},
 					failure : function(errMsg) {
@@ -171,6 +176,7 @@
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
 				success : function(data) {
+					$('#calendar').fullCalendar('removeEvents');
 					$('#calendar').fullCalendar('refetchEvents');
 				},
 				failure : function(errMsg) {
@@ -200,7 +206,6 @@
 						start : eventStart,
 						end : eventEnd,
 					};
-					//$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 				}
 
 				$('#calendar').fullCalendar('unselect');
@@ -277,8 +282,8 @@
 													center : 'title',
 													right : 'month,agendaWeek,agendaDay'
 												},
-												defaultDate : moment().format(
-														"YYYY-MM-DD"),
+												defaultDate : moment().format("YYYY-MM-DD"),
+												defaultView: 'agendaWeek',
 												editable : true,
 												eventLimit : true, // allow "more" link when too many events
 												events : {
@@ -299,7 +304,7 @@
 												},
 												eventClick : function(event,element) {
 													editEvent(event, element);
-													//$('#calendar').fullCalendar('updateEvent', event);
+													
 												},
 												eventMouseover : function(event, jsEvent, view) {
 												},
@@ -312,12 +317,23 @@
 											        }
 
 											    },
+											    eventResize: function(event, delta, revertFunc) {
+
+											       if (!confirm("Are you sure about this change?")) {
+											            revertFunc();
+											        }else{
+											        	updateEvent(event);
+											        }
+
+											    },
+											    
 												eventMouseout : function(event, jsEvent, view) {
 												},
 												loading : function(bool) {$('#loading').toggle(bool);
 												}
 											});
 							$('#calendar').fullCalendar('option', 'timezone', 'local');
+							
 						});
 	});
 	-->

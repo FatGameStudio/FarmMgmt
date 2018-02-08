@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller 
-class CalendarController {
+public class CalendarController {
 	
 	@RequestMapping(value="/jsonCalendar", method=RequestMethod.GET)
 	public ModelAndView jsonCalendar() {

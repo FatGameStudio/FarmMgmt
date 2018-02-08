@@ -75,9 +75,10 @@ public class EventController {
 	}
 
 	@RequestMapping(value="/removeevent", method=RequestMethod.POST)
-	public void removeEvent(@RequestBody Event event) {
+	public Boolean removeEvent(@RequestBody Event event) {
 		System.out.println("appel removeEvent");
 		eventRepository.delete(event);
+		return true;
 	}
 	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

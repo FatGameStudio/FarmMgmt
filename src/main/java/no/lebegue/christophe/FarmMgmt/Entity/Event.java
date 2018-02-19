@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Event {
@@ -15,7 +17,16 @@ public class Event {
 	private Long id;
 	
 	private String title;
-	private String description; 
+	private String description;
+    
+	@ManyToOne
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
+	
+	@ManyToOne
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
+	
 	private Date start;
 	private Date end;
 	
@@ -49,13 +60,26 @@ public class Event {
 	public void setEnd(Date end) {
 		this.end = end;
 	}
-	public Event(Long id, String title, String description, Date start, Date end) {
+	public Activity getActivity() {
+		return activity;
+	}
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	public Zone getZone() {
+		return zone;
+	}
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+	public Event(Long id, String title, String description, Date start, Date end, Activity activity) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.start = start;
 		this.end = end;
+		this.activity = activity;
 	}
 	public Event() {
 		super();
@@ -63,6 +87,6 @@ public class Event {
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", title=" + title + ", description="
-				+ description + ", start=" + start + ", end=" + end + "]";
+				+ description + ", start=" + start + ", end=" + end+ ", activity=" + activity + "]";
 	}
 }

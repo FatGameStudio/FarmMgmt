@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class FarmMgmtApplication extends SpringBootServletInitializer {
 
+	
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(FarmMgmtApplication.class);

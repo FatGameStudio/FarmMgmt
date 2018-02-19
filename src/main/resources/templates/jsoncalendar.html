@@ -64,7 +64,24 @@
 			}
 			return true;
 		}
+		
+		//prepare and open editDialog
+		function editEvent(event, elements) {
 
+			var eventStart = moment(event.start).format("YYYY-MM-DD[T]HH:mm"); //moment(event.start);
+			var eventEnd = moment(event.end).format("YYYY-MM-DD[T]HH:mm");
+
+			modtitle.value = event.title;
+			moddescription.value = event.description;
+			modstartdateandtime.value = eventStart;
+			modenddateandtime.value = eventEnd;
+			moduid.value = event.id;
+			modactivity.value = event.activity.id;
+			modzone.value = event.zone.id;
+			editDialog.dialog("open");
+		}
+		
+		//editDialog delete button
 		function removeEvent() {
 
 			var eventStart = moment(modstartdateandtime.value);
@@ -77,14 +94,16 @@
 					title : modtitle.value,
 					start : eventStart,
 					end : eventEnd,
-					description : moddescription.value
+					description : moddescription.value,
+					activity: {id: document.getElementById("modactivity").options[document.getElementById("modactivity").selectedIndex].value, name : document.getElementById("modactivity").options[document.getElementById("modactivity").selectedIndex].text},
+					zone: {id: document.getElementById("modzone").options[document.getElementById("modzone").selectedIndex].value, name : document.getElementById("modzone").options[document.getElementById("modzone").selectedIndex].text}				
 				};
 
 				editDialog.dialog("close");
 
 				$.ajax({
 					type : "POST",
-					url : "/removeevent",
+					url : "removeevent",
 					data : JSON.stringify(eventData),
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
@@ -100,19 +119,7 @@
 			return true;
 		}
 
-		function editEvent(event, elements) {
-
-			var eventStart = moment(event.start).format("YYYY-MM-DD[T]HH:mm"); //moment(event.start);
-			var eventEnd = moment(event.end).format("YYYY-MM-DD[T]HH:mm");
-
-			modtitle.value = event.title;
-			moddescription.value = event.description;
-			modstartdateandtime.value = eventStart;
-			modenddateandtime.value = eventEnd;
-			moduid.value = event.id;
-			editDialog.dialog("open");
-		}
-
+		//editDialog save button
 		function saveEvent() {
 			var valid = true;
 
@@ -131,10 +138,10 @@
 						title : modtitle.value,
 						start : eventStart,
 						end : eventEnd,
-						description : moddescription.value
+						description : moddescription.value,
+						activity: {id: document.getElementById("modactivity").options[document.getElementById("modactivity").selectedIndex].value, name : document.getElementById("modactivity").options[document.getElementById("modactivity").selectedIndex].text},
+						zone: {id: document.getElementById("modzone").options[document.getElementById("modzone").selectedIndex].value, name : document.getElementById("modzone").options[document.getElementById("modzone").selectedIndex].text}						
 					};
-					//		alert(eventData.title.value + " " + eventData.start.value + " " + eventData.end.value)
-					//		$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
 				}
 				$('#calendar').fullCalendar('unselect');
 
@@ -142,12 +149,11 @@
 
 				$.ajax({
 					type : "POST",
-					url : "/updateevent",
+					url : "updateevent",
 					data : JSON.stringify(eventData),
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
 					success : function(data) {
-
 						$('#calendar').fullCalendar('refetchEvents');
 					},
 					failure : function(errMsg) {
@@ -158,20 +164,22 @@
 			return valid;
 		}
 		
-		function updateEvent(event) {
-			
+		//event resize or move on calendar
+		function updateEvent(event) {			
 			var eventData;
 			eventData = {
 				id : event.id,
 				title : event.title,
 				start : event.start,
 				end : event.end,
-				description : event.description
+				description : event.description,
+				activity : {id: event.activity.id, name: event.activity.name},
+				zone : {id: event.zone.id, name: event.zone.name}
 			};
 
 			$.ajax({
 				type : "POST",
-				url : "/updateevent",
+				url : "updateevent",
 				data : JSON.stringify(eventData),
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
@@ -184,9 +192,10 @@
 				}
 			});
 			
-			return valid;
+			return true;
 		}
-
+		
+		//Dialog create button
 		function addEvent(start, end) {
 			var valid = true;
 
@@ -205,6 +214,8 @@
 						description : description.value,
 						start : eventStart,
 						end : eventEnd,
+						activity: {id: document.getElementById("newactivity").options[document.getElementById("newactivity").selectedIndex].value, name : document.getElementById("newactivity").options[document.getElementById("newactivity").selectedIndex].text},
+						zone: {id: document.getElementById("newzone").options[document.getElementById("newzone").selectedIndex].value, name : document.getElementById("newzone").options[document.getElementById("newzone").selectedIndex].text}
 					};
 				}
 
@@ -213,7 +224,7 @@
 
 				$.ajax({
 					type : "POST",
-					url : "/addevent",
+					url : "addevent",
 					data : JSON.stringify(eventData),
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
@@ -228,6 +239,7 @@
 			return valid;
 		}
 
+		//new event dialog
 		dialog = $("#dialog-form").dialog({
 			autoOpen : false,
 			height : 450,
@@ -244,6 +256,7 @@
 			}
 		});
 
+		//edit event dialog
 		editDialog = $("#edit-dialog-form").dialog({
 			autoOpen : false,
 			height : 450,
@@ -287,7 +300,7 @@
 												editable : true,
 												eventLimit : true, // allow "more" link when too many events
 												events : {
-													url : '/events',
+													url : 'events',
 													type : 'GET',
 													error : function() {
 														alert('there was an error while fetching events!');
@@ -404,7 +417,7 @@ body {
 }
 </style>
 
-<link rel="stylesheet" href="modalstyle.css" />
+
 <style>
 body {
 	font-size: 62.5%;
@@ -493,6 +506,16 @@ div#events-contain table td, div#events-contain table th {
 	      <br></br>
 	      <label for="enddateandtime">ends:</label>
 	      <input type="datetime-local" id="enddateandtime"/>
+	      <br></br>
+	      <label for="newactivity">activity:</label>
+	      <select id="newactivity" class="text ui-widget-content ui-corner-all"> 	      
+              <option th:each="activity : ${allActivities}" th:value="${activity.id}" th:text="${activity.name}">Wireframe</option>
+          </select>
+	      <br></br>
+	      <label for="newzone">zone:</label>
+	      <select id="newzone" class="text ui-widget-content ui-corner-all"> 	      
+              <option th:each="zone : ${allZones}" th:value="${zone.id}" th:text="${zone.name}">Wireframe</option>
+          </select>
 	      <input type="hidden" name="uid" id="uid"/>
 	      
 	      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px"/> 
@@ -508,7 +531,8 @@ div#events-contain table td, div#events-contain table th {
 	      <input type="text" name="modtitle" id="modtitle" value="New Event" class="text ui-widget-content ui-corner-all"/>
 	      
 	      <label for="description">description:</label>
-	      <input type="text" name="moddescription" id="moddescription" value="" class="text ui-widget-content ui-corner-all "/>
+	      <input type="text" name="moddescription" id="moddescription" value="" class="text ui-widget-content ui-corner-all"/>
+	      <br></br>
 	      <label for="modstartdateandtime">starts:</label>
 	      <input type="datetime-local" id="modstartdateandtime"/>
 	      
@@ -516,6 +540,17 @@ div#events-contain table td, div#events-contain table th {
 	      <br></br>
 	      <label for="modenddateandtime">ends:</label>
 	      <input type="datetime-local" id="modenddateandtime"/>   
+	      
+	      <br></br>
+	      <label for="modactivity">activity:</label>
+	      <select id="modactivity">
+              <option th:each="activity : ${allActivities}" th:value="${activity.id}" th:text="${activity.name}">Wireframe</option>
+          </select>
+	      <br></br>
+	      <label for="modzone">zone:</label>
+	      <select id="modzone" class="text ui-widget-content ui-corner-all"> 	      
+              <option th:each="zone : ${allZones}" th:value="${zone.id}" th:text="${zone.name}">Wireframe</option>
+          </select>
 	      <input type="hidden" name="moduid" id="moduid"/>
 	      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px"/> 
 	    </fieldset>

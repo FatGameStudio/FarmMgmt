@@ -36,7 +36,6 @@ public class EventController {
 	@RequestMapping(value="/events", method=RequestMethod.GET)
 	public List<Event> getEventsInRange(@RequestParam(value = "start", required = true) String start, 
 										@RequestParam(value = "end", required = true) String end) {
-		
 		Date startDate = null;
 		Date endDate = null;
 		SimpleDateFormat inputDateFormat=new SimpleDateFormat("yyyy-MM-dd");
@@ -58,25 +57,16 @@ public class EventController {
 	
 	@RequestMapping(value="/addevent", method=RequestMethod.POST)
 	public Event addEvent(@RequestBody Event event) {
-		System.out.println("appel addEvent");
-		System.out.println(event.getTitle());
-		System.out.println(event.getDescription());
-		System.out.println(event.getStart());
-		System.out.println(event.getEnd());
-		System.out.println(event.getId());
-		Event created = eventRepository.save(event);
-		return created; 
+		return eventRepository.save(event); 
 	}
 
 	@RequestMapping(value="/updateevent", method=RequestMethod.POST)
 	public Event updateEvent(@RequestBody Event event) {
-		System.out.println("appel updateEvent");
 		return eventRepository.save(event);
 	}
 
 	@RequestMapping(value="/removeevent", method=RequestMethod.POST)
 	public Boolean removeEvent(@RequestBody Event event) {
-		System.out.println("appel removeEvent");
 		eventRepository.delete(event);
 		return true;
 	}

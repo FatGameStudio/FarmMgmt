@@ -26,14 +26,14 @@ public class EventController {
 	@Autowired
 	private EventRepository eventRepository;
 	
-	@GetMapping(path="/events/all")
+	@GetMapping(path="/allevents")
 	public @ResponseBody Iterable<Event> getAllEvent() {
 		// This returns a JSON or XML with the events
 
 		return eventRepository.findAll();
 	}
 	
-	@RequestMapping(value="/events", method=RequestMethod.GET)
+	@RequestMapping(value="/eventsbetweendates", method=RequestMethod.GET)
 	public List<Event> getEventsInRange(@RequestParam(value = "start", required = true) String start, 
 										@RequestParam(value = "end", required = true) String end) {
 		Date startDate = null;

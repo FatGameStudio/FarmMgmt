@@ -108,8 +108,7 @@
 					contentType : "application/json; charset=utf-8",
 					dataType : "json",
 					success : function(data) {
-
-						$('#calendar').fullCalendar('refetchEvents');
+						$('#calendar').fullCalendar( 'removeEvents' , eventData.id )						
 					},
 					failure : function(errMsg) {
 						alert(errMsg);
@@ -300,7 +299,7 @@
 												editable : true,
 												eventLimit : true, // allow "more" link when too many events
 												events : {
-													url : 'events',
+													url : 'eventsbetweendates',
 													type : 'GET',
 													error : function() {
 														alert('there was an error while fetching events!');
@@ -508,12 +507,12 @@ div#events-contain table td, div#events-contain table th {
 	      <input type="datetime-local" id="enddateandtime"/>
 	      <br></br>
 	      <label for="newactivity">activity:</label>
-	      <select id="newactivity" class="text ui-widget-content ui-corner-all"> 	      
+	      <select id="newactivity"> 	      
               <option th:each="activity : ${allActivities}" th:value="${activity.id}" th:text="${activity.name}">Wireframe</option>
           </select>
 	      <br></br>
 	      <label for="newzone">zone:</label>
-	      <select id="newzone" class="text ui-widget-content ui-corner-all"> 	      
+	      <select id="newzone"> 	      
               <option th:each="zone : ${allZones}" th:value="${zone.id}" th:text="${zone.name}">Wireframe</option>
           </select>
 	      <input type="hidden" name="uid" id="uid"/>
@@ -548,7 +547,7 @@ div#events-contain table td, div#events-contain table th {
           </select>
 	      <br></br>
 	      <label for="modzone">zone:</label>
-	      <select id="modzone" class="text ui-widget-content ui-corner-all"> 	      
+	      <select id="modzone"> 	      
               <option th:each="zone : ${allZones}" th:value="${zone.id}" th:text="${zone.name}">Wireframe</option>
           </select>
 	      <input type="hidden" name="moduid" id="moduid"/>

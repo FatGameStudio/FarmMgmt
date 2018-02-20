@@ -4,8 +4,6 @@ package no.lebegue.christophe.FarmMgmt.Controller;
 
 import no.lebegue.christophe.FarmMgmt.Entity.Activity;
 import no.lebegue.christophe.FarmMgmt.Entity.ActivityRepository;
-import no.lebegue.christophe.FarmMgmt.Entity.Task;
-import no.lebegue.christophe.FarmMgmt.Entity.TaskRepository;
 import no.lebegue.christophe.FarmMgmt.Entity.Zone;
 import no.lebegue.christophe.FarmMgmt.Entity.ZoneRepository;
 
@@ -20,8 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HelloController {
 
-	@Autowired 
-	private TaskRepository taskRepository;
+
 	@Autowired 
 	private ActivityRepository activityRepository;
 	@Autowired 
@@ -53,10 +50,7 @@ public class HelloController {
 		}
     	test += "<br>";
     	
-    	for (Task task : taskRepository.findAll()) {
-			test += task.toString()+"<br>";
-		}
-    	test += "<br>";
+    
     	
         return  test;
     }

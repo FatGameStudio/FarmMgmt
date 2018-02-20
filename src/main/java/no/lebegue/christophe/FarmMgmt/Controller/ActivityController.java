@@ -60,20 +60,4 @@ public class ActivityController {
 		return "adminActivity";
 	}
 	
-	@GetMapping(path="/activities/add") // Map ONLY GET Requests
-	public @ResponseBody String addNewActivity (@RequestParam String name) {
-		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
-
-		Activity n = new Activity();
-		n.setName(name);
-		activityRepository.save(n);
-		return "Saved";
-	}
-
-	@GetMapping(path="/activities/all")
-	public @ResponseBody Iterable<Activity> getAllActivities() {
-		// This returns a JSON or XML with the users
-		return activityRepository.findAll();
-	}
 }

@@ -60,18 +60,4 @@ public class ZoneController {
 		return "adminZones";
 	}
 	
-	@GetMapping(path = "/zones/add") // Map ONLY GET Requests
-	public @ResponseBody String addNewZone(@RequestParam String name) {
-
-		Zone n = new Zone();
-		n.setName(name);
-		zoneRepository.save(n);
-		return "Saved";
-	}
-
-	@GetMapping(path = "/zones/all")
-	public @ResponseBody Iterable<Zone> getAllZone() {
-		// This returns a JSON or XML with the users
-		return zoneRepository.findAll();
-	}
 }

@@ -29,7 +29,7 @@ public class HelloController {
 	private String message;
 	 
 	@RequestMapping("/")
-	public String welcome2(Map<String, Object> model) {
+	public String welcome(Map<String, Object> model) {
 		model.put("message", this.message);
 		return "welcome";
 	}

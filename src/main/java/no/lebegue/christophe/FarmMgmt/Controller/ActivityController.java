@@ -1,6 +1,8 @@
 package no.lebegue.christophe.FarmMgmt.Controller;
 
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +35,12 @@ public class ActivityController {
 	}
 
 	@RequestMapping(value = { "/adminActivities" }, params = { "addActivity" }, method = RequestMethod.POST)
-	public String addActivity(Model model, //
-			@ModelAttribute("newZone") Activity newZone) {
+	public String addActivity(Model model, @ModelAttribute("newActivity") Activity newActivity) {
 
-		String name = newZone.getName();
+		String name = newActivity.getName();
 
 		if (name != null && name.length() > 0) {
-			activityRepository.save(newZone);
+			activityRepository.save(newActivity);
 		} else {
 			model.addAttribute("errorMessage", errorMessage);
 		}
@@ -48,7 +49,19 @@ public class ActivityController {
 
 		return "adminActivity";
 	}
-
+/*
+	@RequestMapping(value = { "/adminActivities" }, params = { "updateActivity" }, method = RequestMethod.POST)
+	public String updateActivity(Model model, @ModelAttribute("updateActivity") Activity updatedActivity, final HttpServletRequest req) {
+		String name = updatedActivity.getName();
+		Optional<Activity> optActivity = activityRepository.findById(updatedActivity.getId());
+		if (optActivity.isPresent()) {
+			activityRepository.save(updatedActivity);
+		}		
+		
+		adminActivities(model);
+		return "adminActivity";
+	}*/
+	
 	@RequestMapping(value = { "/adminActivities" }, params = { "deleteActivity" }, method = RequestMethod.POST)
 	public String deleteActivity(Model model, final HttpServletRequest req) {
 		final int id = Integer.valueOf(req.getParameter("deleteActivity"));

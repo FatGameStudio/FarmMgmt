@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Spring Boot Thymeleaf Hello World Example</title>
+<meta charset="UTF-8" />
+<title>Farm Management</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <link rel="stylesheet" type="text/css"
@@ -16,12 +17,14 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Spring Boot</a>
+				<a class="navbar-brand" href="./">Farm Management</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="#about">About</a></li>
+					<li class="active"><a href="./">Home</a></li>
+					<li><a href="./jsonCalendar">calendar</a></li>
+					<li><a href="./adminActivities">activities</a></li>
+					<li><a href="./adminZones">zones</a></li>
 				</ul>
 			</div>
 		</div>
@@ -30,7 +33,7 @@
 	<div class="container">
 
 		<div class="starter-template">
-			<h1>Spring Boot Web Thymeleaf Example</h1>
+			<h1>Farm Management</h1>
 			<h2>
 				<span th:text="'Message: ' + ${message}"></span>
 			</h2>
@@ -38,6 +41,7 @@
 
 	</div>
 	<!-- /.container -->
+	
 
 	<script type="text/javascript"
 		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>

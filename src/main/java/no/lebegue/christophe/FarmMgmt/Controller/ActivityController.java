@@ -30,12 +30,13 @@ public class ActivityController {
 		model.addAttribute("activities", activityRepository.findAll());
 
 		Activity activity = new Activity();
-		model.addAttribute("newActivity", activity);
+		model.addAttribute("activity", activity);
+		
 		return "adminActivity";
 	}
 
 	@RequestMapping(value = { "/adminActivities" }, params = { "addActivity" }, method = RequestMethod.POST)
-	public String addActivity(Model model, @ModelAttribute("newActivity") Activity newActivity) {
+	public String addActivity(Model model, @ModelAttribute("activity") Activity newActivity) {
 
 		String name = newActivity.getName();
 
@@ -49,18 +50,22 @@ public class ActivityController {
 
 		return "adminActivity";
 	}
-/*
+
 	@RequestMapping(value = { "/adminActivities" }, params = { "updateActivity" }, method = RequestMethod.POST)
-	public String updateActivity(Model model, @ModelAttribute("updateActivity") Activity updatedActivity, final HttpServletRequest req) {
+	public String updateActivity(Model model, @ModelAttribute("activity") Activity updatedActivity) {
+		
 		String name = updatedActivity.getName();
+		
 		Optional<Activity> optActivity = activityRepository.findById(updatedActivity.getId());
-		if (optActivity.isPresent()) {
+		if (optActivity.isPresent() && name != null && name.length() > 0) {
 			activityRepository.save(updatedActivity);
-		}		
+		} else {
+			model.addAttribute("errorMessage", errorMessage);
+		}
 		
 		adminActivities(model);
 		return "adminActivity";
-	}*/
+	}
 	
 	@RequestMapping(value = { "/adminActivities" }, params = { "deleteActivity" }, method = RequestMethod.POST)
 	public String deleteActivity(Model model, final HttpServletRequest req) {

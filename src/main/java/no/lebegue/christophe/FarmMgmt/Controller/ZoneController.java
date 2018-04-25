@@ -1,5 +1,7 @@
 package no.lebegue.christophe.FarmMgmt.Controller;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.lebegue.christophe.FarmMgmt.Entity.Activity;
 import no.lebegue.christophe.FarmMgmt.Entity.Zone;
 import no.lebegue.christophe.FarmMgmt.Entity.ZoneRepository;
 
@@ -31,18 +34,35 @@ public class ZoneController {
 		model.addAttribute("zones", zoneRepository.findAll());
 
 		Zone zone = new Zone();
-		model.addAttribute("newZone", zone);
+		model.addAttribute("zone", zone);
 		return "adminZones";
 	}
 
 	@RequestMapping(value = { "/adminZones" }, params = { "addZone" }, method = RequestMethod.POST)
 	public String addZone(Model model, //
-			@ModelAttribute("newZone") Zone newZone) {
+			@ModelAttribute("zone") Zone newZone) {
 
 		String name = newZone.getName();
 
 		if (name != null && name.length() > 0) {
 			zoneRepository.save(newZone);
+		} else {
+			model.addAttribute("errorMessage", errorMessage);
+		}
+
+		zonesList(model);
+
+		return "adminZones";
+	}
+	
+	@RequestMapping(value = { "/adminZones" }, params = { "updateZone" }, method = RequestMethod.POST)
+	public String updateZone(Model model, //
+			@ModelAttribute("zone") Zone updatedZone) {
+
+		String name = updatedZone.getName();
+		Optional<Zone> optZone = zoneRepository.findById(updatedZone.getId());
+		if (optZone.isPresent() && name != null && name.length() > 0) {
+			zoneRepository.save(updatedZone);
 		} else {
 			model.addAttribute("errorMessage", errorMessage);
 		}

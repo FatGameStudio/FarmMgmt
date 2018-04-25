@@ -3,10 +3,33 @@
 <head>
 <meta charset="UTF-8" />
 <title>Activity admin</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
 
 <link rel="stylesheet" type="text/css"
 	href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script>
+	function newActivity() {
+		document.getElementById('addModal').style.display = "block";
+	}
+
+	function closeAddModal() {
+		document.getElementById('addModal').style.display = "none";
+	}
+
+	function editActivity(activity) {
+		moduid.value = activity.id;
+		modname.value = activity.name;
+		document.getElementById('editModal').style.display = "block";
+	}
+
+	function closeEditModal() {
+		document.getElementById('editModal').style.display = "none";
+	}
+</script>
+
+<style type="text/css">
+</style>
 </head>
 <body>
 
@@ -18,39 +41,92 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="./">Home</a></li>
-					<li><a href="./jsonCalendar">calendar</a></li>
-					<li class="active"><a href="./adminActivities">activities</a></li>
-					<li><a href="./adminZones">zones</a></li>
+					<li><a href="./jsonCalendar">Calendar</a></li>
+					<li class="active"><a href="./adminActivities">Activities</a></li>
+					<li><a href="./adminZones">Zones</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+	<div class="container">
 
-	<h1>Activities</h1>
-	<br />
-	<br />
-	<form th:action="@{/adminActivities}" th:object="${newActivity}" method="POST">
-		<div>
-			<table border="1">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-				</tr>
-				<tr th:each="activity : ${activities}">
-					<td th:utext="${activity.id}">...</td>
-					<td th:utext="${activity.name}">...</td>
-					<td>
-						<button type="submit" name="deleteActivity" th:value="${activity.id}"
-							th:text="delete">Remove row</button>
-					</td>
-				</tr>
-			</table>
+		<div class="starter-template">
+			<h1>
+				Activities
+				<button type="button" onclick="newActivity()"
+					class="btn btn-default">Add new activity</button>
+			</h1>
+			<br/>
+			<form th:action="@{/adminActivities}" th:object="${activity}"
+				method="POST">
+				<div class="row">
+					<div class="col-md-4">
+						<table class="table">
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Edit</th>
+								<th>Remove</th>
+							</tr>
+							<tr th:each="activity : ${activities}">
+								<td th:utext="${activity.id}">...</td>
+								<td th:utext="${activity.name}">...</td>
+								<td>
+									<button type="button" class="btn btn-default btn-sm"
+										th:onclick="'editActivity({id:' + ${activity.id}+',name:\''+${activity.name} +'\'})'">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" name="deleteActivity"
+										th:value="${activity.id}" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-remove"></span>
+									</button>
+
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</form>
+
 		</div>
+	</div>
 
-		<h1>Create an Activity:</h1>
-		Name*: <input type="text" th:field="*{name}" /> <br /> 
-		<input type="submit" name="addActivity" value="Create" />
-	</form>
+	<div id="addModal" class="modal">
+		<form th:action="@{/adminActivities}" th:object="${activity}"
+			method="POST" class="modal-content">
+			<fieldset>
+
+				<legend>
+					Create activity <span class="close" onclick="closeAddModal()">&times;</span>
+				</legend>
+
+				<label>Activity name: </label> <input type="text" th:field="*{name}">
+				<br /> <br /> <input type="submit" name="addActivity"
+					value="Create" />
+
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="editModal" class="modal">
+		<form th:action="@{/adminActivities}" th:object="${activity}"
+			method="POST" class="modal-content">
+			<fieldset>
+
+				<legend>
+					Modify activity <span class="close" onclick="closeEditModal()">&times;</span>
+				</legend>
+
+				<label>New name: </label> <input type="text" th:field="*{name}"
+					name=modname id="modname" value="" /> <input type="hidden"
+					th:field="*{id}" name="moduid" id="moduid" /> <br /> <br /> <input
+					type="submit" name="updateActivity" value="Save" />
+
+			</fieldset>
+		</form>
+	</div>
 
 	<br />
 
@@ -58,5 +134,7 @@
 
 	<div th:if="${errorMessage}" th:utext="${errorMessage}"
 		style="color: red; font-style: italic;">...</div>
+
+
 </body>
 </html>

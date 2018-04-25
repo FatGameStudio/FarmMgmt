@@ -3,11 +3,32 @@
 <head>
 <meta charset="UTF-8" />
 <title>Zone admin</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css"/>
 
 <link rel="stylesheet" type="text/css"
 	href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script>
+	function newZone() {
+		document.getElementById('addModal').style.display = "block";
+	}
+
+	function closeAddModal() {
+		document.getElementById('addModal').style.display = "none";
+	}
+
+	function editZone(zone) {
+		moduid.value = zone.id;
+		modname.value = zone.name;
+		document.getElementById('editModal').style.display = "block";
+	}
+
+	function closeEditModal() {
+		document.getElementById('editModal').style.display = "none";
+	}
+</script>
 </head>
+
 <body>
 
 	<nav class="navbar navbar-inverse">
@@ -18,39 +39,93 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li><a href="./">Home</a></li>
-					<li><a href="./jsonCalendar">calendar</a></li>
-					<li><a href="./adminActivities">activities</a></li>
-					<li class="active"><a href="./adminZones">zones</a></li>
+					<li><a href="./jsonCalendar">Calendar</a></li>
+					<li><a href="./adminActivities">Activities</a></li>
+					<li class="active"><a href="./adminZones">Zones</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<h1>Zones</h1>
-	<br />
-	<br />
-	<form th:action="@{/adminZones}" th:object="${newZone}" method="POST">
-		<div>
-			<table border="1">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-				</tr>
-				<tr th:each="zone : ${zones}">
-					<td th:utext="${zone.id}">...</td>
-					<td th:utext="${zone.name}">...</td>
-					<td>
-						<button type="submit" name="deleteZone" th:value="${zone.id}"
-							th:text="delete">Remove row</button>
-					</td>
-				</tr>
-			</table>
-		</div>
+	<div class="container">
 
-		<h1>Create a Zone:</h1>
-		Name*: <input type="text" th:field="*{name}" /> <br />
-		 <input type="submit" name="addZone" value="Create" />
-	</form>
+		<div class="starter-template">
+			<h1>
+				Zones
+				<button type="button" onclick="newZone()"
+					class="btn btn-default">Add new zone</button>
+			</h1>
+			<br/>
+			<form th:action="@{/adminZones}" th:object="${zone}"
+				method="POST">
+				<div class="row">
+					<div class="col-md-4">
+						<table class="table">
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+								<th>Edit</th>
+								<th>Remove</th>
+							</tr>
+							<tr th:each="zone : ${zones}">
+								<td th:utext="${zone.id}">...</td>
+								<td th:utext="${zone.name}">...</td>
+								<td>
+									<button type="button" class="btn btn-default btn-sm"
+										th:onclick="'editZone({id:' + ${zone.id}+',name:\''+${zone.name} +'\'})'">
+										<span class="glyphicon glyphicon-pencil"></span>
+									</button>
+								</td>
+								<td>
+									<button type="submit" name="deleteZone"
+										th:value="${zone.id}" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-remove"></span>
+									</button>
+
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+	<div id="addModal" class="modal">
+		<form th:action="@{/adminZones}" th:object="${zone}"
+			method="POST" class="modal-content">
+			<fieldset>
+
+				<legend>
+					Create zone <span class="close" onclick="closeAddModal()">&times;</span>
+				</legend>
+
+				<label>Zone name: </label> <input type="text" th:field="*{name}">
+				<br /> <br /> <input type="submit" name="addZone"
+					value="Create" />
+
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="editModal" class="modal">
+		<form th:action="@{/adminZones}" th:object="${zone}"
+			method="POST" class="modal-content">
+			<fieldset>
+
+				<legend>
+					Modify zone <span class="close" onclick="closeEditModal()">&times;</span>
+				</legend>
+
+				<label>New name: </label> <input type="text" th:field="*{name}"
+					name=modname id="modname" value="" /> <input type="hidden"
+					th:field="*{id}" name="moduid" id="moduid" /> <br /> <br /> <input
+					type="submit" name="updateZone" value="Save" />
+
+			</fieldset>
+		</form>
+	</div>
 
 	<br />
 
